@@ -1,0 +1,19 @@
+export default async (req) => {
+  const body = await req.json();
+
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${Netlify.env.get('GROQ_API_KEY')}`
+    },
+    body: JSON.stringify(body)
+  });
+
+  const data = await res.json();
+  return new Response(JSON.stringify(data), {
+    headers: { 'Content-Type': 'application/json' }
+  });
+};
+
+export const config = { path: '/api/style' };
