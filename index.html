@@ -326,8 +326,9 @@ Rules:
                 })
             });
             clearInterval(interval);
-            const rawText = await res.text();
-            throw new Error('DEBUG: ' + rawText);
+            if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message || 'API error.'); }
+            const data = await res.json();
+            renderResult(name, occasion, data.choices[0].message.content);
         } catch (err) {
             clearInterval(interval);
             document.getElementById('loadingScreen').classList.remove('show');
