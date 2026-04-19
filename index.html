@@ -316,7 +316,7 @@ Rules:
         const userMessage = `Style me for ${occasion}.\nName: ${name}\nGender: ${gender}\nAge: ${age}\nBody type: ${bodyType}\nSkin tone: ${skinTone}\nBudget: ${budget}\nVibe: ${selectedVibe}`;
 
         try {
-            const res = await fetch('/api/style', {
+            const res = await fetch('/.netlify/functions/style', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
