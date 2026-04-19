@@ -1,4 +1,8 @@
 exports.handler = async function(event) {
+  const keyPreview = process.env.GROQ_API_KEY 
+    ? process.env.GROQ_API_KEY.substring(0, 8) + '...' 
+    : 'NOT FOUND';
+    
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
@@ -20,13 +24,13 @@ exports.handler = async function(event) {
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify({ ...data, _keyPreview: keyPreview })
     };
 
   } catch (err) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message })
+      body: JSON.stringify({ error: err.message, _keyPreview: keyPreview })
     };
   }
 };
