@@ -326,9 +326,8 @@ Rules:
                 })
             });
             clearInterval(interval);
-            if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message || 'API error. Check your Groq key.'); }
-            const data = await res.json();
-            renderResult(name, occasion, data.choices[0].message.content);
+            const rawText = await res.text();
+            throw new Error('DEBUG: ' + rawText);
         } catch (err) {
             clearInterval(interval);
             document.getElementById('loadingScreen').classList.remove('show');
