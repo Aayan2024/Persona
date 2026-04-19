@@ -36,7 +36,7 @@
         }
         .side-column { display: flex; flex-direction: column; gap: 24px; padding-top: 60px; }
         .img-wrap {
-            width: 250px; height: 360px; border-radius: 12px; overflow: hidden;
+            width: 180px; height: 220px; border-radius: 12px; overflow: hidden;
             box-shadow: 0 12px 30px rgba(0,0,0,0.12);
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             flex-shrink: 0; background: rgba(255,255,255,0.3);
@@ -64,17 +64,15 @@
         header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin: 0 0 4px; font-weight: 700; line-height: 1; }
         header h1 span { color: var(--gold); font-style: italic; }
         header p { letter-spacing: 4px; font-size: 0.65rem; color: #888; text-transform: uppercase; margin: 0; }
-        .api-box { background: white; padding: 16px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 4px; }
-        .api-note { font-size: 0.68rem; color: #999; margin-top: 6px; line-height: 1.5; }
-        .api-note a { color: var(--gold); text-decoration: none; }
+
         .section-label { color: var(--gold); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 22px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
         label { display: block; font-size: 0.75rem; color: #777; margin-bottom: 6px; }
-        input[type="text"], input[type="password"] {
+        input[type="text"] {
             width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 6px;
             background: var(--input-bg); font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
             outline: none; transition: border-color 0.2s;
         }
-        input[type="text"]:focus, input[type="password"]:focus { border-color: var(--gold); }
+        input[type="text"]:focus { border-color: var(--gold); }
         .pill-select { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 6px; }
         .pill-opt {
             padding: 8px 16px; background: white; border: 1px solid var(--border);
@@ -129,9 +127,9 @@
 <div class="main-wrapper">
 
     <div class="side-column left-side">
-        <div class="img-wrap"><img src="scarf.jpg" alt="Style 1"></div>
-        <div class="img-wrap"><img src="hoody.jpg" alt="Style 2"></div>
-        <div class="img-wrap"><img src="white.jpg" alt="Style 3"></div>
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&q=80" alt="Style 1"></div>
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1488161628813-04466f872be2?w=400&q=80" alt="Style 2"></div>
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80" alt="Style 3"></div>
     </div>
 
     <div class="form-container">
@@ -141,12 +139,6 @@
         </header>
 
         <div id="formSection">
-            <div class="api-box">
-                <label>Groq API Key</label>
-                <input type="password" id="apiKey" placeholder="gsk_...">
-                <p class="api-note">Free key at <a href="https://console.groq.com" target="_blank">console.groq.com</a>. Stays on your device, never stored.</p>
-            </div>
-
             <div class="section-label">Basics</div>
             <label>Name</label>
             <input type="text" id="userName" placeholder="What should we call you?">
@@ -243,9 +235,9 @@
     </div>
 
     <div class="side-column right-side">
-        <div class="img-wrap"><img src="brown_shirt.jpg" alt="Style 4"></div>
-        <div class="img-wrap"><img src="goggles.jpg" alt="Style 5"></div>
-        <div class="img-wrap"><img src="red.jpg" alt="Style 6"></div>
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=400&q=80" alt="Style 4"></div>
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80" alt="Style 5"></div>
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80" alt="Style 6"></div>
     </div>
 
 </div>
@@ -283,7 +275,6 @@
 
     async function generateStyle() {
         hideError();
-        const apiKey   = document.getElementById('apiKey').value.trim();
         const name     = document.getElementById('userName').value.trim();
         const gender   = document.getElementById('gender').dataset.val || '';
         const bodyType = document.getElementById('bodyType').dataset.val || '';
@@ -292,7 +283,6 @@
         const occasion = document.getElementById('occasion').dataset.val || '';
         const budget   = document.getElementById('budget').dataset.val || '';
 
-        if (!apiKey)   return showError('Please enter your Groq API key.');
         if (!name)     return showError('Tell us your name.');
         if (!gender)   return showError('Please select your gender.');
         if (!bodyType) return showError('Please select your body type.');
@@ -326,9 +316,9 @@ Rules:
         const userMessage = `Style me for ${occasion}.\nName: ${name}\nGender: ${gender}\nAge: ${age}\nBody type: ${bodyType}\nSkin tone: ${skinTone}\nBudget: ${budget}\nVibe: ${selectedVibe}`;
 
         try {
-            const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            const res = await fetch('/api/style', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     model: 'llama-3.3-70b-versatile',
                     max_tokens: 900,
