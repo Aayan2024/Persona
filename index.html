@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Persona | Your Personal AI Stylist</title>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>emailjs.init("D_WqKgcxqgi0GFq1k");</script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -244,6 +244,7 @@
 
 </div>
 <script>
+    let currentUser = {};
     const ageIn = document.getElementById('ageInput');
     const ageLb = document.getElementById('ageLabel');
     ageIn.addEventListener('input', e => ageLb.innerText = e.target.value);
@@ -292,6 +293,7 @@
         if (!occasion) return showError('Please pick an occasion.');
         if (!budget)   return showError('Please select a budget range.');
 
+        currentUser = { name, gender, age, bodyType, skinTone, vibe: selectedVibe, budget };
         document.getElementById('formSection').style.display = 'none';
         document.getElementById('loadingScreen').classList.add('show');
 
