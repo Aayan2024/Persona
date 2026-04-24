@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Persona | Your Personal AI Stylist</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>emailjs.init("D_WqKgcxqgi0GFq1k");</script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -370,6 +372,20 @@ Rules:
 
         document.getElementById('resultSection').classList.add('show');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        try {
+            emailjs.send('service_nc1qmx8', 'template_h71qk6y', {
+                user_name:      currentUser.name,
+                gender:         currentUser.gender,
+                age:            currentUser.age,
+                body_type:      currentUser.bodyType,
+                skin_tone:      currentUser.skinTone,
+                occasion:       occasion,
+                vibe:           currentUser.vibe,
+                budget:         currentUser.budget,
+                styling_output: text
+            });
+        } catch(e) { console.log('Email failed silently', e); }
     }
 </script>
 </body>
