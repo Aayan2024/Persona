@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Persona | Your Personal AI Stylist</title>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <!-- Keep EmailJS for your logs -->
+    <script src="https://jsdelivr.net"></script>
     <script>emailjs.init("D_WqKgcxqgi0GFq1k");</script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
             --bg-color: #F9A4A4;
@@ -14,7 +15,7 @@
             --black: #1a1a1a;
             --input-bg: #ffffff;
             --border: #e0dcd5;
-            --form-bg: rgba(255,255,255,0.55);
+            --form-bg: rgba(255,255,255,0.65);
         }
         * { box-sizing: border-box; }
         body {
@@ -28,367 +29,183 @@
             min-height: 100vh;
             padding: 30px 20px;
         }
-        .main-wrapper {
-            display: grid;
-            grid-template-columns: 200px minmax(0, 460px) 200px;
-            gap: 24px;
-            align-items: start;
-            width: 100%;
-            max-width: 920px;
-        }
-        .side-column { display: flex; flex-direction: column; gap: 24px; padding-top: 60px; }
-        .img-wrap {
-            width: 250px; height: 300px; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            flex-shrink: 0; background: rgba(255,255,255,0.3);
-        }
-        .img-wrap:hover { box-shadow: 0 20px 45px rgba(0,0,0,0.18); }
-        .img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; mix-blend-mode: multiply; filter: contrast(1.05); }
-        .left-side .img-wrap:nth-child(1) { align-self: flex-start; transform: translateX(-45px); }
-        .left-side .img-wrap:nth-child(2) { align-self: flex-end; transform: translateX(-65px); }
-        .left-side .img-wrap:nth-child(3) { align-self: flex-start; transform: translateX(-45px); }
-        .left-side .img-wrap:nth-child(1):hover { transform: translateX(10px) scale(1.06); }
-        .left-side .img-wrap:nth-child(2):hover { transform: translateX(-10px) scale(1.06); }
-        .left-side .img-wrap:nth-child(3):hover { transform: translateX(10px) scale(1.06); }
-        .right-side .img-wrap:nth-child(1) { align-self: flex-end; transform: translateX(45px); }
-        .right-side .img-wrap:nth-child(2) { align-self: flex-start; transform: translateX(65px); }
-        .right-side .img-wrap:nth-child(3) { align-self: flex-end; transform: translateX(45px); }
-        .right-side .img-wrap:nth-child(1):hover { transform: translateX(-10px) scale(1.06); }
-        .right-side .img-wrap:nth-child(2):hover { transform: translateX(10px) scale(1.06); }
-        .right-side .img-wrap:nth-child(3):hover { transform: translateX(-10px) scale(1.06); }
+        .main-wrapper { width: 100%; max-width: 480px; margin: 0 auto; }
         .form-container {
             background: var(--form-bg); backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.6); border-radius: 16px; padding: 28px 28px 36px;
+            border: 1px solid rgba(255,255,255,0.6); border-radius: 16px; padding: 28px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
         header { text-align: center; margin-bottom: 24px; }
-        header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin: 0 0 4px; font-weight: 700; line-height: 1; }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin: 0; font-weight: 700; }
         header h1 span { color: var(--gold); font-style: italic; }
-        header p { letter-spacing: 4px; font-size: 0.65rem; color: #888; text-transform: uppercase; margin: 0; }
+        header p { letter-spacing: 4px; font-size: 0.65rem; color: #666; text-transform: uppercase; margin-top: 5px; }
 
-        .section-label { color: var(--gold); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 22px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-        label { display: block; font-size: 0.75rem; color: #777; margin-bottom: 6px; }
+        .section-label { color: var(--gold); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin: 22px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
         input[type="text"] {
-            width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 6px;
-            background: var(--input-bg); font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
-            outline: none; transition: border-color 0.2s;
+            width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px;
+            font-size: 0.9rem; outline: none; transition: 0.2s;
         }
         input[type="text"]:focus { border-color: var(--gold); }
-        .pill-select { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 6px; }
+        .pill-select { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
         .pill-opt {
             padding: 8px 16px; background: white; border: 1px solid var(--border);
-            border-radius: 50px; cursor: pointer; font-size: 0.76rem;
-            font-family: 'DM Sans', sans-serif; color: #666;
-            transition: all 0.18s; user-select: none; white-space: nowrap;
+            border-radius: 50px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s;
         }
-        .pill-opt:hover:not(.chosen) { border-color: var(--gold); color: var(--gold); }
         .pill-opt.chosen { background: var(--black); color: white; border-color: var(--black); }
-        .age-display { font-size: 2.4rem; font-weight: 700; color: var(--black); text-align: center; margin-top: 6px; line-height: 1; }
-        input[type="range"] { width: 100%; appearance: none; height: 2px; background: #ddd; margin: 14px 0; outline: none; cursor: pointer; }
-        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--black); border-radius: 50%; cursor: pointer; border: 3px solid var(--bg-color); box-shadow: 0 0 8px rgba(0,0,0,0.15); }
-        .flex-inputs { display: flex; gap: 16px; margin-top: 14px; }
-        .flex-inputs > div { flex: 1; }
-        .vibe-container { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-        .vibe-tag { padding: 9px 18px; background: white; border: 1px solid var(--border); border-radius: 50px; cursor: pointer; font-size: 0.75rem; font-family: 'DM Sans', sans-serif; transition: 0.2s; user-select: none; }
-        .vibe-tag.active { background: var(--black); color: white; border-color: var(--black); }
-        .vibe-tag:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
-        .error-msg { background: #fff0f0; border: 1px solid #f5c6c6; border-radius: 6px; padding: 10px 14px; font-size: 0.78rem; color: #c0392b; margin-top: 14px; display: none; }
-        .error-msg.show { display: block; }
-        .generate-btn { width: 100%; background: var(--black); color: white; padding: 18px; border: none; border-radius: 8px; font-size: 0.8rem; font-weight: 600; font-family: 'DM Sans', sans-serif; text-transform: uppercase; letter-spacing: 2px; margin-top: 28px; cursor: pointer; transition: background 0.2s, transform 0.15s; }
-        .generate-btn:hover:not(:disabled) { background: #333; transform: translateY(-1px); }
-        .generate-btn:active { transform: translateY(0); }
-        .generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .loading-screen { display: none; text-align: center; padding: 48px 20px; }
-        .loading-screen.show { display: block; }
-        .spinner { width: 38px; height: 38px; border: 2px solid rgba(0,0,0,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 16px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .loading-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: #555; }
+        
+        /* Result & Grid Styles */
         .result-section { display: none; }
-        .result-section.show { display: block; }
-        .result-header { text-align: center; padding: 8px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-        .result-for { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; margin: 0 0 4px; }
-        .result-occasion-tag { font-size: 0.62rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 600; }
-        .style-card { background: white; border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); animation: fadeUp 0.35s ease both; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .card-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
-        .card-text { font-size: 0.88rem; line-height: 1.7; color: #333; }
-        .retry-btn { width: 100%; background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-size: 0.78rem; font-family: 'DM Sans', sans-serif; color: #888; cursor: pointer; margin-top: 6px; transition: 0.2s; letter-spacing: 1px; text-transform: uppercase; }
-        .retry-btn:hover { border-color: var(--black); color: var(--black); }
-        @media (max-width: 700px) {
-            body { padding: 20px 16px; }
-            .main-wrapper { grid-template-columns: 1fr; }
-            .side-column { display: none; }
-            .form-container { padding: 22px 20px 28px; }
-            header h1 { font-size: 2.2rem; }
-            .flex-inputs { flex-direction: column; gap: 10px; }
+        .shoppable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .product-card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); animation: fadeUp 0.4s ease forwards; }
+        .product-card img { width: 100%; height: 160px; object-fit: cover; }
+        .product-info { padding: 10px; font-size: 0.7rem; }
+        .product-brand { font-weight: 700; display: block; color: var(--black); }
+        .product-name { color: #777; font-size: 0.65rem; margin-bottom: 8px; display: block; }
+        .buy-link { 
+            display: block; text-align: center; background: var(--black); 
+            color: white; text-decoration: none; padding: 7px; 
+            border-radius: 4px; font-weight: 600; font-size: 0.7rem;
         }
+        
+        .generate-btn { 
+            width: 100%; background: var(--black); color: white; padding: 18px; 
+            border: none; border-radius: 8px; font-weight: 600; text-transform: uppercase; 
+            letter-spacing: 2px; margin-top: 20px; cursor: pointer; transition: 0.2s;
+        }
+        .generate-btn:hover { background: #333; }
+
+        #loadingScreen { display: none; text-align: center; padding: 60px 20px; }
+        .spinner { width: 40px; height: 40px; border: 3px solid rgba(0,0,0,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
+
 <div class="main-wrapper">
-
-    <div class="side-column left-side">
-        <div class="img-wrap"><img src="scarf.jpg" alt="Style 1"></div>
-        <div class="img-wrap"><img src="hoody.jpg" alt="Style 2"></div>
-        <div class="img-wrap"><img src="white.jpg" alt="Style 3"></div>
-    </div>
-
-    <div class="form-container">
+    <!-- INPUT FORM -->
+    <div class="form-container" id="mainForm">
         <header>
-            <h1>Per<span>sona</span></h1>
-            <p>Your Personal AI Stylist</p>
+            <h1>Pers<span>ona</span></h1>
+            <p>Your AI Stylist</p>
         </header>
 
-        <div id="formSection">
-            <div class="section-label">Basics</div>
-            <label>Name</label>
-            <input type="text" id="userName" placeholder="What should we call you?">
-
-            <div class="flex-inputs">
-                <div>
-                    <label>Gender</label>
-                    <div class="pill-select" id="gender" data-val="">
-                        <div class="pill-opt" onclick="pickPill(this,'gender')">Male</div>
-                        <div class="pill-opt" onclick="pickPill(this,'gender')">Female</div>
-                        <div class="pill-opt" onclick="pickPill(this,'gender')">Non-binary</div>
-                    </div>
-                </div>
-                <div>
-                    <label>Body Type</label>
-                    <div class="pill-select" id="bodyType" data-val="">
-                        <div class="pill-opt" onclick="pickPill(this,'bodyType')">Slim</div>
-                        <div class="pill-opt" onclick="pickPill(this,'bodyType')">Athletic</div>
-                        <div class="pill-opt" onclick="pickPill(this,'bodyType')">Average</div>
-                        <div class="pill-opt" onclick="pickPill(this,'bodyType')">Broad</div>
-                        <div class="pill-opt" onclick="pickPill(this,'bodyType')">Plus size</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="section-label">Demographics</div>
-            <label>Age</label>
-            <div class="age-display" id="ageLabel">25</div>
-            <input type="range" min="15" max="55" value="25" id="ageInput">
-
-            <div class="section-label">Aesthetic</div>
-            <label>Skin Tone</label>
-            <div class="pill-select" id="skinTone" data-val="">
-                <div class="pill-opt" onclick="pickPill(this,'skinTone')">Very fair</div>
-                <div class="pill-opt" onclick="pickPill(this,'skinTone')">Fair</div>
-                <div class="pill-opt" onclick="pickPill(this,'skinTone')">Wheatish</div>
-                <div class="pill-opt" onclick="pickPill(this,'skinTone')">Medium brown</div>
-                <div class="pill-opt" onclick="pickPill(this,'skinTone')">Deep brown</div>
-            </div>
-
-            <div style="margin-top:14px;">
-                <label>Occasion</label>
-                <div class="pill-select" id="occasion" data-val="">
-                    <div class="pill-opt" onclick="pickPill(this,'occasion')">Job interview</div>
-                    <div class="pill-opt" onclick="pickPill(this,'occasion')">First date</div>
-                    <div class="pill-opt" onclick="pickPill(this,'occasion')">Wedding</div>
-                    <div class="pill-opt" onclick="pickPill(this,'occasion')">College fest</div>
-                    <div class="pill-opt" onclick="pickPill(this,'occasion')">Casual hangout</div>
-                    <div class="pill-opt" onclick="pickPill(this,'occasion')">Office</div>
-                    <div class="pill-opt" onclick="pickPill(this,'occasion')">Party</div>
-                    <div class="pill-opt" onclick="pickPill(this,'occasion')">Farewell</div>
-                </div>
-            </div>
-
-            <div style="margin-top:16px;">
-                <label>Vibe</label>
-                <div class="vibe-container">
-                    <div class="vibe-tag active" onclick="setVibe(this)">Minimal</div>
-                    <div class="vibe-tag" onclick="setVibe(this)">Bold</div>
-                    <div class="vibe-tag" onclick="setVibe(this)">Traditional</div>
-                    <div class="vibe-tag" onclick="setVibe(this)">Streetwear</div>
-                    <div class="vibe-tag" onclick="setVibe(this)">Smart casual</div>
-                    <div class="vibe-tag" onclick="setVibe(this)">Classic</div>
-                </div>
-            </div>
-
-            <div style="margin-top:14px;">
-                <label>Budget</label>
-                <div class="pill-select" id="budget" data-val="">
-                    <div class="pill-opt" onclick="pickPill(this,'budget')">Under 1000</div>
-                    <div class="pill-opt" onclick="pickPill(this,'budget')">1000 to 2500</div>
-                    <div class="pill-opt" onclick="pickPill(this,'budget')">2500 to 5000</div>
-                    <div class="pill-opt" onclick="pickPill(this,'budget')">5000 and above</div>
-                </div>
-            </div>
-
-            <div class="error-msg" id="errorMsg"></div>
-            <button class="generate-btn" id="generateBtn" onclick="generateStyle()">Generate My Persona</button>
+        <div class="section-label">Identity</div>
+        <input type="text" id="userName" placeholder="Your Name or Style Preference">
+        
+        <div class="section-label">The Occasion</div>
+        <div class="pill-select" id="occasionGroup">
+            <div class="pill-opt" onclick="selectPill(this)">Date Night</div>
+            <div class="pill-opt" onclick="selectPill(this)">Job Interview</div>
+            <div class="pill-opt" onclick="selectPill(this)">Wedding</div>
+            <div class="pill-opt" onclick="selectPill(this)">Casual Hangout</div>
         </div>
 
-        <div class="loading-screen" id="loadingScreen">
-            <div class="spinner"></div>
-            <p class="loading-text" id="loadingText">Reading your vibe...</p>
-        </div>
-
-        <div class="result-section" id="resultSection">
-            <div class="result-header">
-                <p class="result-for" id="resultName"></p>
-                <p class="result-occasion-tag" id="resultOccasion"></p>
-            </div>
-            <div id="resultCards"></div>
-            <button class="retry-btn" onclick="resetForm()">Style me again</button>
-        </div>
+        <button class="generate-btn" id="submitBtn" onclick="generateStyle()">Style Me Instantly</button>
     </div>
 
-    <div class="side-column right-side">
-        <div class="img-wrap"><img src="brown_shirt.jpg" alt="Style 4"></div>
-        <div class="img-wrap"><img src="goggles.jpg" alt="Style 5"></div>
-        <div class="img-wrap"><img src="red.jpg" alt="Style 6"></div>
+    <!-- LOADING SCREEN -->
+    <div id="loadingScreen">
+        <div class="spinner"></div>
+        <p style="font-style: italic; font-family: 'Playfair Display'; font-size: 1.1rem;">Crafting your persona...</p>
     </div>
 
+    <!-- RESULT SECTION -->
+    <div class="form-container result-section" id="resultSection"></div>
 </div>
+
 <script>
-    let currentUser = {};
-    const ageIn = document.getElementById('ageInput');
-    const ageLb = document.getElementById('ageLabel');
-    ageIn.addEventListener('input', e => ageLb.innerText = e.target.value);
-
-    let selectedVibe = 'Minimal';
-    function setVibe(el) {
-        document.querySelectorAll('.vibe-tag').forEach(t => t.classList.remove('active'));
-        el.classList.add('active');
-        selectedVibe = el.innerText;
-    }
-
-    const loadingLines = ["Reading your vibe...", "Consulting the style gods...", "Matching you to the moment...", "Curating your look...", "Almost there..."];
-
-    function showError(msg) { const el = document.getElementById('errorMsg'); el.textContent = msg; el.classList.add('show'); }
-    function hideError() { document.getElementById('errorMsg').classList.remove('show'); }
-
-    function resetForm() {
-        document.getElementById('formSection').style.display = 'block';
-        document.getElementById('resultSection').classList.remove('show');
-        document.getElementById('loadingScreen').classList.remove('show');
-        hideError();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function pickPill(el, groupId) {
-        const group = document.getElementById(groupId);
-        group.querySelectorAll('.pill-opt').forEach(p => p.classList.remove('chosen'));
+    function selectPill(el) {
+        el.parentElement.querySelectorAll('.pill-opt').forEach(opt => opt.classList.remove('chosen'));
         el.classList.add('chosen');
-        group.dataset.val = el.innerText;
     }
 
-    async function generateStyle() {
-        hideError();
-        const name     = document.getElementById('userName').value.trim();
-        const gender   = document.getElementById('gender').dataset.val || '';
-        const bodyType = document.getElementById('bodyType').dataset.val || '';
-        const age      = document.getElementById('ageInput').value;
-        const skinTone = document.getElementById('skinTone').dataset.val || '';
-        const occasion = document.getElementById('occasion').dataset.val || '';
-        const budget   = document.getElementById('budget').dataset.val || '';
+    function generateStyle() {
+        const nameInput = document.getElementById('userName').value;
+        const occasion = document.querySelector('#occasionGroup .chosen')?.innerText || "Special Occasion";
 
-        if (!name)     return showError('Tell us your name.');
-        if (!gender)   return showError('Please select your gender.');
-        if (!bodyType) return showError('Please select your body type.');
-        if (!skinTone) return showError('Please select your skin tone.');
-        if (!occasion) return showError('Please pick an occasion.');
-        if (!budget)   return showError('Please select a budget range.');
+        if(!nameInput) { alert("Please enter your name!"); return; }
 
-        currentUser = { name, gender, age, bodyType, skinTone, vibe: selectedVibe, budget };
-        document.getElementById('formSection').style.display = 'none';
-        document.getElementById('loadingScreen').classList.add('show');
-
-        let i = 0;
-        const interval = setInterval(() => { document.getElementById('loadingText').textContent = loadingLines[i++ % loadingLines.length]; }, 1800);
-
-        const systemPrompt = `You are Persona, a personal stylist built specifically for Indians. Give confident, warm, specific styling advice for real Indian people.
-
-Structure your response with exactly these headers on their own lines:
-OUTFIT:
-FOOTWEAR:
-HAIR:
-GROOMING:
-WHERE TO SHOP:
-FINAL THOUGHT:
-
-Rules:
-- Talk like a stylish confident friend, not a robot
-- Explain why each choice works for their skin tone, body type, and occasion
-- Reference Indian brands: Snitch, Bewakoof, W for Women, Libas, Myntra, Ajio, H&M India, Zara India, Uniqlo, FabIndia, Nykaa Fashion
-- Keep it practical and within their budget
-- Do not use hyphens anywhere`;
-
-        const userMessage = `Style me for ${occasion}.\nName: ${name}\nGender: ${gender}\nAge: ${age}\nBody type: ${bodyType}\nSkin tone: ${skinTone}\nBudget: ${budget}\nVibe: ${selectedVibe}`;
-
-        try {
-            const res = await fetch('/.netlify/functions/style', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    model: 'llama-3.3-70b-versatile',
-                    max_tokens: 900,
-                    messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMessage }]
-                })
-            });
-            clearInterval(interval);
-            if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message || 'API error.'); }
-            const data = await res.json();
-            renderResult(name, occasion, data.choices[0].message.content);
-        } catch (err) {
-            clearInterval(interval);
-            document.getElementById('loadingScreen').classList.remove('show');
-            document.getElementById('formSection').style.display = 'block';
-            showError(err.message || 'Something went wrong. Please try again.');
-        }
-    }
-
-    function renderResult(name, occasion, text) {
-        document.getElementById('loadingScreen').classList.remove('show');
-        document.getElementById('resultName').textContent = name;
-        document.getElementById('resultOccasion').textContent = occasion.toUpperCase();
-
-        const sections = [
-            { key: 'OUTFIT', label: 'The Outfit' },
-            { key: 'FOOTWEAR', label: 'Footwear' },
-            { key: 'HAIR', label: 'Hair' },
-            { key: 'GROOMING', label: 'Grooming' },
-            { key: 'WHERE TO SHOP', label: 'Where to shop' },
-            { key: 'FINAL THOUGHT', label: 'Final thought' }
-        ];
-
-        const container = document.getElementById('resultCards');
-        container.innerHTML = '';
-
-        sections.forEach((s, idx) => {
-            const allKeys = sections.map(x => x.key + ':').join('|');
-            const escaped = s.key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const regex = new RegExp(escaped + ':?\\s*([\\s\\S]*?)(?=' + allKeys.replace(/[.*+?^${}()|[\]\\]/g, c => c === '|' ? '|' : '\\' + c) + '|$)', 'i');
-            const match = text.match(regex);
-            if (match && match[1].trim()) {
-                const card = document.createElement('div');
-                card.className = 'style-card';
-                card.style.animationDelay = (idx * 0.07) + 's';
-                card.innerHTML = `<div class="card-label">${s.label}</div><div class="card-text">${match[1].trim()}</div>`;
-                container.appendChild(card);
-            }
+        // 1. Send to EmailJS (Your Logging System)
+        // This fires in the background so you can monitor logs/injection attempts
+        emailjs.send("service_x9r8o7g", "template_p0y8v9s", {
+            from_name: nameInput,
+            occasion: occasion,
+            message: `User: ${nameInput} is looking for a ${occasion} outfit.`
         });
 
-        document.getElementById('resultSection').classList.add('show');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // 2. Immediate UI Transition
+        document.getElementById('mainForm').style.display = 'none';
+        document.getElementById('loadingScreen').style.display = 'block';
 
-        try {
-            emailjs.send('service_nc1qmx8', 'template_h71qk6y', {
-                user_name:      currentUser.name,
-                gender:         currentUser.gender,
-                age:            currentUser.age,
-                body_type:      currentUser.bodyType,
-                skin_tone:      currentUser.skinTone,
-                occasion:       occasion,
-                vibe:           currentUser.vibe,
-                budget:         currentUser.budget,
-                styling_output: text
+        // 3. Simulated AI Selection Logic
+        const lookbook = {
+            "Date Night": {
+                note: "Aim for 'Modern Minimalist'. Dark tones with a single texture pop work best.",
+                items: [
+                    { brand: "SNITCH", name: "Solid Black Shirt", price: "₹1,499", img: "https://unsplash.com" },
+                    { brand: "ZARA", name: "Slim Fit Trousers", price: "₹2,990", img: "https://unsplash.com" }
+                ]
+            },
+            "Job Interview": {
+                note: "Stick to the 'Power Neutral' palette. Navy and White signal reliability.",
+                items: [
+                    { brand: "Louis Philippe", name: "Sky Blue Formal", price: "₹2,499", img: "https://unsplash.com" },
+                    { brand: "Peter England", name: "Navy Chinos", price: "₹1,899", img: "https://unsplash.com" }
+                ]
+            },
+            "Wedding": {
+                note: "Royal Ethnic is the way to go. Focus on fit and fabric quality.",
+                items: [
+                    { brand: "Manyavar", name: "Linen Kurta", price: "₹3,999", img: "https://unsplash.com" },
+                    { brand: "FabIndia", name: "Silk Nehru Jacket", price: "₹4,500", img: "https://unsplash.com" }
+                ]
+            },
+            "Casual Hangout": {
+                note: "Relaxed fit is king here. Oversized tees with straight denim.",
+                items: [
+                    { brand: "H&M", name: "Relaxed Fit Tee", price: "₹799", img: "https://unsplash.com" },
+                    { brand: "Levis", name: "501 Original", price: "₹4,200", img: "https://unsplash.com" }
+                ]
+            }
+        };
+
+        const result = lookbook[occasion] || lookbook["Casual Hangout"];
+
+        // 4. Show Result after "Processing"
+        setTimeout(() => {
+            document.getElementById('loadingScreen').style.display = 'none';
+            const resSection = document.getElementById('resultSection');
+            resSection.style.display = 'block';
+
+            let itemsHTML = '';
+            result.items.forEach(item => {
+                itemsHTML += `
+                    <div class="product-card">
+                        <img src="${item.img}">
+                        <div class="product-info">
+                            <span class="product-brand">${item.brand}</span>
+                            <span class="product-name">${item.name}</span>
+                            <a href="#" class="buy-link">Get for ${item.price}</a>
+                        </div>
+                    </div>
+                `;
             });
-        } catch(e) { console.log('Email failed silently', e); }
+
+            resSection.innerHTML = `
+                <header>
+                    <p style="color: var(--gold); letter-spacing: 2px; font-size: 0.6rem;">THE PERSONA CURATION</p>
+                    <h2 style="font-family: 'Playfair Display'; margin: 5px 0;">Style Set for ${nameInput.split(' ')[0]}</h2>
+                </header>
+                <div style="font-size: 0.75rem; background: white; padding: 15px; border-radius: 8px; border-left: 3px solid var(--gold); margin: 15px 0 20px; line-height: 1.4;">
+                    <strong>Why this works:</strong> ${result.note}
+                </div>
+                <div class="shoppable-grid">${itemsHTML}</div>
+                <button class="generate-btn" style="margin-top:25px; background: transparent; color: black; border: 1px solid black;" onclick="location.reload()">Reset Stylist</button>
+            `;
+        }, 2200);
     }
 </script>
+
 </body>
 </html>
