@@ -29,9 +29,36 @@
             padding: 30px 20px;
         }
         .main-wrapper {
+            display: grid;
+            grid-template-columns: 200px minmax(0, 460px) 200px;
+            gap: 24px;
+            align-items: start;
             width: 100%;
-            max-width: 500px;
+            max-width: 920px;
         }
+        .side-column { display: flex; flex-direction: column; gap: 24px; padding-top: 60px; }
+        .img-wrap {
+            width: 250px; height: 300px; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            flex-shrink: 0; background: rgba(255,255,255,0.3);
+        }
+        .img-wrap:hover { box-shadow: 0 20px 45px rgba(0,0,0,0.18); }
+        .img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; mix-blend-mode: multiply; filter: contrast(1.05); }
+        
+        /* Positioning logic for side images */
+        .left-side .img-wrap:nth-child(1) { align-self: flex-start; transform: translateX(-45px); }
+        .left-side .img-wrap:nth-child(2) { align-self: flex-end; transform: translateX(-65px); }
+        .left-side .img-wrap:nth-child(3) { align-self: flex-start; transform: translateX(-45px); }
+        .left-side .img-wrap:nth-child(1):hover { transform: translateX(10px) scale(1.06); }
+        .left-side .img-wrap:nth-child(2):hover { transform: translateX(-10px) scale(1.06); }
+        
+        .right-side .img-wrap:nth-child(1) { align-self: flex-end; transform: translateX(45px); }
+        .right-side .img-wrap:nth-child(2) { align-self: flex-start; transform: translateX(65px); }
+        .right-side .img-wrap:nth-child(3) { align-self: flex-end; transform: translateX(45px); }
+        .right-side .img-wrap:nth-child(1):hover { transform: translateX(-10px) scale(1.06); }
+        .right-side .img-wrap:nth-child(2):hover { transform: translateX(10px) scale(1.06); }
+
         .form-container {
             background: var(--form-bg); backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -43,26 +70,22 @@
         header p { letter-spacing: 4px; font-size: 0.65rem; color: #888; text-transform: uppercase; margin: 0; }
 
         .section-label { color: var(--gold); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 22px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-        label { display: block; font-size: 0.75rem; color: #777; margin-bottom: 6px; }
         input[type="text"] {
             width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 6px;
-            background: var(--input-bg); font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
-            outline: none; transition: border-color 0.2s;
+            background: var(--input-bg); font-size: 0.9rem; outline: none; transition: border-color 0.2s;
         }
-        input[type="text"]:focus { border-color: var(--gold); }
         .pill-select { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 6px; }
         .pill-opt {
             padding: 8px 16px; background: white; border: 1px solid var(--border);
-            border-radius: 50px; cursor: pointer; font-size: 0.76rem;
-            font-family: 'DM Sans', sans-serif; color: #666;
-            transition: all 0.18s; user-select: none; white-space: nowrap;
+            border-radius: 50px; cursor: pointer; font-size: 0.76rem; color: #666;
+            transition: all 0.18s; user-select: none;
         }
         .pill-opt.chosen { background: var(--black); color: white; border-color: var(--black); }
         .age-display { font-size: 2.4rem; font-weight: 700; color: var(--black); text-align: center; margin-top: 6px; line-height: 1; }
-        input[type="range"] { width: 100%; appearance: none; height: 2px; background: #ddd; margin: 14px 0; outline: none; cursor: pointer; }
-        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--black); border-radius: 50%; cursor: pointer; border: 3px solid var(--bg-color); box-shadow: 0 0 8px rgba(0,0,0,0.15); }
+        input[type="range"] { width: 100%; appearance: none; height: 2px; background: #ddd; margin: 14px 0; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--black); border-radius: 50%; border: 3px solid var(--bg-color); }
         
-        .generate-btn { width: 100%; background: var(--black); color: white; padding: 18px; border: none; border-radius: 8px; font-size: 0.8rem; font-weight: 600; font-family: 'DM Sans', sans-serif; text-transform: uppercase; letter-spacing: 2px; margin-top: 28px; cursor: pointer; transition: background 0.2s; }
+        .generate-btn { width: 100%; background: var(--black); color: white; padding: 18px; border: none; border-radius: 8px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-top: 28px; cursor: pointer; }
         
         .loading-screen { display: none; text-align: center; padding: 48px 20px; }
         .spinner { width: 38px; height: 38px; border: 2px solid rgba(0,0,0,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 16px; }
@@ -71,7 +94,7 @@
         .result-section { display: none; }
         .shoppable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
         .product-card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); animation: fadeUp 0.4s ease; }
-        .product-card img { width: 100%; height: 150px; object-fit: cover; }
+        .product-card img { width: 100%; height: 140px; object-fit: cover; }
         .product-info { padding: 10px; font-size: 0.7rem; }
         .buy-link { display: block; text-align: center; background: var(--black); color: white; text-decoration: none; padding: 6px; border-radius: 4px; margin-top: 5px; font-weight: 600; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -80,44 +103,61 @@
 <body>
 
 <div class="main-wrapper">
-    <div class="form-container" id="mainForm">
-        <header>
-            <h1>Pers<span>ona</span></h1>
-            <p>Your AI Stylist</p>
-        </header>
-
-        <div class="section-label">Identity</div>
-        <input type="text" id="userName" placeholder="Your Name">
-        
-        <div class="section-label">Age</div>
-        <div class="age-display" id="ageDisplay">22</div>
-        <input type="range" id="userAge" min="16" max="60" value="22" oninput="document.getElementById('ageDisplay').innerText = this.value">
-
-        <div class="section-label">The Occasion</div>
-        <div class="pill-select" id="occasionGroup">
-            <div class="pill-opt" onclick="selectPill(this)">Date Night</div>
-            <div class="pill-opt chosen" onclick="selectPill(this)">Job Interview</div>
-            <div class="pill-opt" onclick="selectPill(this)">Wedding</div>
-            <div class="pill-opt" onclick="selectPill(this)">Casual Hangout</div>
-        </div>
-
-        <div class="section-label">Your Vibe</div>
-        <div class="pill-select" id="vibeGroup">
-            <div class="pill-opt chosen" onclick="selectPill(this)">Minimalist</div>
-            <div class="pill-opt" onclick="selectPill(this)">Streetwear</div>
-            <div class="pill-opt" onclick="selectPill(this)">Classic</div>
-            <div class="pill-opt" onclick="selectPill(this)">Experimental</div>
-        </div>
-
-        <button class="generate-btn" onclick="generateStyle()">Style Me Instantly</button>
+    <!-- LEFT SIDE IMAGES -->
+    <div class="side-column left-side">
+        <div class="img-wrap"><img src="https://unsplash.com" alt="Style 1"></div>
+        <div class="img-wrap"><img src="https://unsplash.com" alt="Style 2"></div>
+        <div class="img-wrap"><img src="https://unsplash.com" alt="Style 3"></div>
     </div>
 
-    <div class="loading-screen" id="loadingScreen">
-        <div class="spinner"></div>
-        <p style="font-style: italic; font-family: 'Playfair Display';">Designing your specific persona...</p>
+    <!-- MAIN INTERFACE -->
+    <div class="center-content">
+        <div class="form-container" id="mainForm">
+            <header>
+                <h1>Pers<span>ona</span></h1>
+                <p>Your AI Stylist</p>
+            </header>
+
+            <div class="section-label">Identity</div>
+            <input type="text" id="userName" placeholder="Your Name">
+            
+            <div class="section-label">Age</div>
+            <div class="age-display" id="ageDisplay">22</div>
+            <input type="range" id="userAge" min="16" max="60" value="22" oninput="document.getElementById('ageDisplay').innerText = this.value">
+
+            <div class="section-label">The Occasion</div>
+            <div class="pill-select" id="occasionGroup">
+                <div class="pill-opt" onclick="selectPill(this)">Date Night</div>
+                <div class="pill-opt chosen" onclick="selectPill(this)">Job Interview</div>
+                <div class="pill-opt" onclick="selectPill(this)">Wedding</div>
+                <div class="pill-opt" onclick="selectPill(this)">Casual Hangout</div>
+            </div>
+
+            <div class="section-label">Your Vibe</div>
+            <div class="pill-select" id="vibeGroup">
+                <div class="pill-opt chosen" onclick="selectPill(this)">Minimalist</div>
+                <div class="pill-opt" onclick="selectPill(this)">Streetwear</div>
+                <div class="pill-opt" onclick="selectPill(this)">Classic</div>
+                <div class="pill-opt" onclick="selectPill(this)">Experimental</div>
+            </div>
+
+            <button class="generate-btn" onclick="generateStyle()">Style Me Instantly</button>
+        </div>
+
+        <div class="loading-screen" id="loadingScreen">
+            <div class="spinner"></div>
+            <p style="font-style: italic; font-family: 'Playfair Display';">Analyzing trends...</p>
+        </div>
+
+        <div class="form-container result-section" id="resultSection"></div>
     </div>
 
-    <div class="form-container result-section" id="resultSection"></div>
+    <!-- RIGHT SIDE IMAGES -->
+    <div class="side-column right-side">
+        <div class="img-wrap"><img src="https://unsplash.com" alt="Style 4"></div>
+        <div class="img-wrap"><img src="https://unsplash.com" alt="Style 5"></div>
+        <div class="img-wrap"><img src="https://unsplash.com" alt="Style 6"></div>
+    </div>
 </div>
 
 <script>
@@ -132,31 +172,28 @@
         const occasion = document.querySelector('#occasionGroup .chosen')?.innerText || "General";
         const vibe = document.querySelector('#vibeGroup .chosen')?.innerText || "Minimalist";
 
-        // LOGGING (For monitoring prompt injections and analytics)
         emailjs.send("service_x9r8o7g", "template_p0y8v9s", {
             from_name: name,
             occasion: occasion,
-            message: `User Data - Age: ${age}, Vibe: ${vibe}, Occasion: ${occasion}, Input: ${name}`
+            message: `User Data - Age: ${age}, Vibe: ${vibe}, Occasion: ${occasion}, Log: ${name}`
         });
 
-        // UI TRANSITION
         document.getElementById('mainForm').style.display = 'none';
         document.getElementById('loadingScreen').style.display = 'block';
 
-        // LOGIC FOR OUTPUT
         const lookbook = {
             "Job Interview": {
-                note: `For a ${vibe} look, keep it sharp. Use structured fabrics and neutral tones to project confidence.`,
+                note: `For a ${vibe} look, keep it sharp. Use structured fabrics to project confidence.`,
                 items: [
-                    { brand: "Uniqlo", name: "Oxford Shirt", price: "₹1,990", img: "https://unsplash.com" },
-                    { brand: "Raymond", name: "Slim Fit Chinos", price: "₹2,499", img: "https://unsplash.com" }
+                    { brand: "ZARA", name: "Structured Shirt", price: "₹2,990", img: "https://unsplash.com" },
+                    { brand: "H&M", name: "Slim Chinos", price: "₹1,999", img: "https://unsplash.com" }
                 ]
             },
             "Wedding": {
-                note: "Traditional with a modern twist. Focus on rich textures and deep colors.",
+                note: "Traditional textures with a modern fit.",
                 items: [
                     { brand: "Manyavar", name: "Linen Kurta", price: "₹3,999", img: "https://unsplash.com" },
-                    { brand: "FabIndia", name: "Nehru Jacket", price: "₹4,200", img: "https://unsplash.com" }
+                    { brand: "FabIndia", name: "Silk Jacket", price: "₹4,200", img: "https://unsplash.com" }
                 ]
             }
         };
@@ -170,28 +207,10 @@
 
             let itemsHTML = '';
             defaultLook.items.forEach(item => {
-                itemsHTML += `
-                    <div class="product-card">
-                        <img src="${item.img}">
-                        <div class="product-info">
-                            <strong>${item.brand}</strong><br>${item.name}
-                            <a href="#" class="buy-link">${item.price}</a>
-                        </div>
-                    </div>
-                `;
+                itemsHTML += `<div class="product-card"><img src="${item.img}"><div class="product-info"><strong>${item.brand}</strong><br>${item.name}<a href="#" class="buy-link">${item.price}</a></div></div>`;
             });
 
-            res.innerHTML = `
-                <header>
-                    <p style="color: var(--gold); font-size: 0.6rem; letter-spacing: 2px;">THE AI CURATION</p>
-                    <h2 style="font-family: 'Playfair Display'; margin: 5px 0;">${name}'s Persona</h2>
-                </header>
-                <div style="font-size: 0.75rem; background: white; padding: 15px; border-radius: 8px; border-left: 3px solid var(--gold); margin-bottom: 20px; line-height: 1.4;">
-                    <strong>Note:</strong> ${defaultLook.note}
-                </div>
-                <div class="shoppable-grid">${itemsHTML}</div>
-                <button class="generate-btn" style="background:transparent; color:black; border:1px solid black;" onclick="location.reload()">Start Over</button>
-            `;
+            res.innerHTML = `<header><p style="color:var(--gold);font-size:0.6rem;letter-spacing:2px;">THE AI CURATION</p><h2 style="font-family:'Playfair Display';margin:5px 0;">${name}'s Persona</h2></header><div style="font-size:0.75rem;background:white;padding:15px;border-radius:8px;border-left:3px solid var(--gold);margin-bottom:20px;"><strong>Note:</strong> ${defaultLook.note}</div><div class="shoppable-grid">${itemsHTML}</div><button class="generate-btn" style="background:transparent;color:black;border:1px solid black;" onclick="location.reload()">Reset</button>`;
         }, 2200);
     }
 </script>
