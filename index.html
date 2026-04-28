@@ -8,212 +8,113 @@
     <script>emailjs.init("D_WqKgcxqgi0GFq1k");</script>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #F9A4A4;
-            --gold: #c5a059;
-            --black: #1a1a1a;
-            --input-bg: #ffffff;
-            --border: #e0dcd5;
-            --form-bg: rgba(255,255,255,0.55);
-        }
+        :root { --bg-color: #F9A4A4; --gold: #c5a059; --black: #1a1a1a; --border: #e0dcd5; --form-bg: rgba(255,255,255,0.55); }
         * { box-sizing: border-box; }
-        body {
-            background-color: var(--bg-color);
-            color: var(--black);
-            font-family: 'DM Sans', sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 30px 20px;
-        }
-        .main-wrapper {
-            display: grid;
-            grid-template-columns: 200px minmax(0, 460px) 200px;
-            gap: 24px;
-            align-items: start;
-            width: 100%;
-            max-width: 920px;
-        }
+        body { background-color: var(--bg-color); color: var(--black); font-family: 'DM Sans', sans-serif; margin: 0; display: flex; justify-content: center; padding: 30px 20px; }
+        .main-wrapper { display: grid; grid-template-columns: 200px minmax(0, 460px) 200px; gap: 24px; width: 100%; max-width: 920px; }
         .side-column { display: flex; flex-direction: column; gap: 24px; padding-top: 60px; }
-        .img-wrap {
-            width: 250px; height: 300px; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            flex-shrink: 0; background: rgba(255,255,255,0.3);
-        }
-        .img-wrap:hover { box-shadow: 0 20px 45px rgba(0,0,0,0.18); }
-        .img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; mix-blend-mode: multiply; filter: contrast(1.05); }
+        .img-wrap { width: 250px; height: 300px; border-radius: 12px; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.12); background: rgba(255,255,255,0.3); }
+        .img-wrap img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; }
         
-        /* Positioning logic for side images */
-        .left-side .img-wrap:nth-child(1) { align-self: flex-start; transform: translateX(-45px); }
-        .left-side .img-wrap:nth-child(2) { align-self: flex-end; transform: translateX(-65px); }
-        .left-side .img-wrap:nth-child(3) { align-self: flex-start; transform: translateX(-45px); }
-        .left-side .img-wrap:nth-child(1):hover { transform: translateX(10px) scale(1.06); }
-        .left-side .img-wrap:nth-child(2):hover { transform: translateX(-10px) scale(1.06); }
-        
-        .right-side .img-wrap:nth-child(1) { align-self: flex-end; transform: translateX(45px); }
-        .right-side .img-wrap:nth-child(2) { align-self: flex-start; transform: translateX(65px); }
-        .right-side .img-wrap:nth-child(3) { align-self: flex-end; transform: translateX(45px); }
-        .right-side .img-wrap:nth-child(1):hover { transform: translateX(-10px) scale(1.06); }
-        .right-side .img-wrap:nth-child(2):hover { transform: translateX(10px) scale(1.06); }
+        .left-side .img-wrap:nth-child(1) { transform: translateX(-45px); }
+        .left-side .img-wrap:nth-child(2) { transform: translateX(-65px); }
+        .left-side .img-wrap:nth-child(3) { transform: translateX(-45px); }
+        .right-side .img-wrap:nth-child(1) { transform: translateX(45px); }
+        .right-side .img-wrap:nth-child(2) { transform: translateX(65px); }
+        .right-side .img-wrap:nth-child(3) { transform: translateX(45px); }
 
-        .form-container {
-            background: var(--form-bg); backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.6); border-radius: 16px; padding: 28px 28px 36px;
-        }
+        .form-container { background: var(--form-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.6); border-radius: 16px; padding: 28px 28px 36px; }
         header { text-align: center; margin-bottom: 24px; }
-        header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin: 0 0 4px; font-weight: 700; line-height: 1; }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin: 0; }
         header h1 span { color: var(--gold); font-style: italic; }
         header p { letter-spacing: 4px; font-size: 0.65rem; color: #888; text-transform: uppercase; margin: 0; }
 
         .section-label { color: var(--gold); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 22px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-        input[type="text"] {
-            width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 6px;
-            background: var(--input-bg); font-size: 0.9rem; outline: none; transition: border-color 0.2s;
-        }
+        label { display: block; font-size: 0.75rem; color: #777; margin-bottom: 6px; }
+        input[type="text"] { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; outline: none; }
+        .flex-inputs { display: flex; gap: 16px; margin-top: 14px; }
+        .flex-inputs > div { flex: 1; }
         .pill-select { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 6px; }
-        .pill-opt {
-            padding: 8px 16px; background: white; border: 1px solid var(--border);
-            border-radius: 50px; cursor: pointer; font-size: 0.76rem; color: #666;
-            transition: all 0.18s; user-select: none;
-        }
+        .pill-opt { padding: 8px 14px; background: white; border: 1px solid var(--border); border-radius: 50px; cursor: pointer; font-size: 0.7rem; color: #666; }
         .pill-opt.chosen { background: var(--black); color: white; border-color: var(--black); }
-        .age-display { font-size: 2.4rem; font-weight: 700; color: var(--black); text-align: center; margin-top: 6px; line-height: 1; }
-        input[type="range"] { width: 100%; appearance: none; height: 2px; background: #ddd; margin: 14px 0; outline: none; }
-        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--black); border-radius: 50%; border: 3px solid var(--bg-color); }
         
-        .generate-btn { width: 100%; background: var(--black); color: white; padding: 18px; border: none; border-radius: 8px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-top: 28px; cursor: pointer; }
-        
-        .loading-screen { display: none; text-align: center; padding: 48px 20px; }
-        .spinner { width: 38px; height: 38px; border: 2px solid rgba(0,0,0,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 16px; }
+        .vibe-container { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .vibe-tag { padding: 9px 15px; background: white; border: 1px solid var(--border); border-radius: 50px; cursor: pointer; font-size: 0.75rem; }
+        .vibe-tag.active { background: var(--black); color: white; }
+
+        .age-display { font-size: 2.2rem; font-weight: 700; text-align: center; }
+        input[type="range"] { width: 100%; appearance: none; height: 2px; background: #ddd; margin: 10px 0; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; background: var(--black); border-radius: 50%; cursor: pointer; }
+
+        .generate-btn { width: 100%; background: var(--black); color: white; padding: 18px; border: none; border-radius: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-top: 25px; cursor: pointer; }
+        .loading-screen { display: none; text-align: center; padding: 50px 0; }
+        .spinner { width: 40px; height: 40px; border: 3px solid rgba(0,0,0,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
         .result-section { display: none; }
         .shoppable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
-        .product-card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); animation: fadeUp 0.4s ease; }
+        .product-card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
         .product-card img { width: 100%; height: 140px; object-fit: cover; }
-        .product-info { padding: 10px; font-size: 0.7rem; }
-        .buy-link { display: block; text-align: center; background: var(--black); color: white; text-decoration: none; padding: 6px; border-radius: 4px; margin-top: 5px; font-weight: 600; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .buy-link { display: block; text-align: center; background: var(--black); color: white; text-decoration: none; padding: 6px; border-radius: 4px; margin-top: 8px; font-weight: 600; font-size: 0.7rem; }
     </style>
 </head>
 <body>
 
 <div class="main-wrapper">
-    <!-- LEFT SIDE IMAGES -->
     <div class="side-column left-side">
-        <div class="img-wrap"><img src="https://unsplash.com" alt="Style 1"></div>
-        <div class="img-wrap"><img src="https://unsplash.com" alt="Style 2"></div>
-        <div class="img-wrap"><img src="https://unsplash.com" alt="Style 3"></div>
+        <div class="img-wrap"><img src="scarf.jpg"></div>
+        <div class="img-wrap"><img src="hoody.jpg"></div>
+        <div class="img-wrap"><img src="white.jpg"></div>
     </div>
 
-    <!-- MAIN INTERFACE -->
     <div class="center-content">
         <div class="form-container" id="mainForm">
-            <header>
-                <h1>Pers<span>ona</span></h1>
-                <p>Your AI Stylist</p>
-            </header>
-
-            <div class="section-label">Identity</div>
+            <header><h1>Pers<span>ona</span></h1><p>Your AI Stylist</p></header>
+            <div class="section-label">Basics</div>
+            <label>Name</label>
             <input type="text" id="userName" placeholder="Your Name">
-            
-            <div class="section-label">Age</div>
-            <div class="age-display" id="ageDisplay">22</div>
-            <input type="range" id="userAge" min="16" max="60" value="22" oninput="document.getElementById('ageDisplay').innerText = this.value">
-
-            <div class="section-label">The Occasion</div>
-            <div class="pill-select" id="occasionGroup">
-                <div class="pill-opt" onclick="selectPill(this)">Date Night</div>
-                <div class="pill-opt chosen" onclick="selectPill(this)">Job Interview</div>
-                <div class="pill-opt" onclick="selectPill(this)">Wedding</div>
-                <div class="pill-opt" onclick="selectPill(this)">Casual Hangout</div>
+            <div class="flex-inputs">
+                <div><label>Gender</label><div class="pill-select" id="genderSelect"><div class="pill-opt" onclick="pick(this)">Male</div><div class="pill-opt" onclick="pick(this)">Female</div></div></div>
+                <div><label>Body Type</label><div class="pill-select" id="bodySelect"><div class="pill-opt" onclick="pick(this)">Slim</div><div class="pill-opt" onclick="pick(this)">Athletic</div><div class="pill-opt" onclick="pick(this)">Average</div></div></div>
             </div>
-
-            <div class="section-label">Your Vibe</div>
-            <div class="pill-select" id="vibeGroup">
-                <div class="pill-opt chosen" onclick="selectPill(this)">Minimalist</div>
-                <div class="pill-opt" onclick="selectPill(this)">Streetwear</div>
-                <div class="pill-opt" onclick="selectPill(this)">Classic</div>
-                <div class="pill-opt" onclick="selectPill(this)">Experimental</div>
-            </div>
-
-            <button class="generate-btn" onclick="generateStyle()">Style Me Instantly</button>
+            <div class="section-label">Demographics</div>
+            <label>Age: <span id="ageLb">25</span></label>
+            <input type="range" min="15" max="55" value="25" id="ageIn" oninput="document.getElementById('ageLb').innerText=this.value">
+            <div class="section-label">Aesthetic</div>
+            <label>Skin Tone</label>
+            <div class="pill-select" id="skinSelect"><div class="pill-opt" onclick="pick(this)">Fair</div><div class="pill-opt" onclick="pick(this)">Wheatish</div><div class="pill-opt" onclick="pick(this)">Brown</div></div>
+            <label style="margin-top:15px">Occasion</label>
+            <div class="pill-select" id="occSelect"><div class="pill-opt" onclick="pick(this)">Wedding</div><div class="pill-opt" onclick="pick(this)">Interview</div><div class="pill-opt" onclick="pick(this)">Date</div></div>
+            <div class="section-label">Vibe & Budget</div>
+            <div class="vibe-container" id="vibeGroup"><div class="vibe-tag active" onclick="setVibe(this)">Minimal</div><div class="vibe-tag" onclick="setVibe(this)">Bold</div><div class="vibe-tag" onclick="setVibe(this)">Streetwear</div></div>
+            <div class="pill-select" id="budgetSelect" style="margin-top:10px"><div class="pill-opt" onclick="pick(this)">Under 1000</div><div class="pill-opt" onclick="pick(this)">1000-2500</div><div class="pill-opt" onclick="pick(this)">2500+</div></div>
+            <button class="generate-btn" onclick="gen()">Generate My Persona</button>
         </div>
-
-        <div class="loading-screen" id="loadingScreen">
-            <div class="spinner"></div>
-            <p style="font-style: italic; font-family: 'Playfair Display';">Analyzing trends...</p>
-        </div>
-
-        <div class="form-container result-section" id="resultSection"></div>
+        <div class="loading-screen" id="loading"><div class="spinner"></div><p>Styling your persona...</p></div>
+        <div class="form-container result-section" id="res"></div>
     </div>
 
-    <!-- RIGHT SIDE IMAGES -->
     <div class="side-column right-side">
-        <div class="img-wrap"><img src="https://unsplash.com" alt="Style 4"></div>
-        <div class="img-wrap"><img src="https://unsplash.com" alt="Style 5"></div>
-        <div class="img-wrap"><img src="https://unsplash.com" alt="Style 6"></div>
+        <div class="img-wrap"><img src="brown_shirt.jpg"></div>
+        <div class="img-wrap"><img src="goggles.jpg"></div>
+        <div class="img-wrap"><img src="red.jpg"></div>
     </div>
 </div>
 
 <script>
-    function selectPill(el) {
-        el.parentElement.querySelectorAll('.pill-opt').forEach(opt => opt.classList.remove('chosen'));
-        el.classList.add('chosen');
-    }
-
-    function generateStyle() {
-        const name = document.getElementById('userName').value || "Guest";
-        const age = document.getElementById('userAge').value;
-        const occasion = document.querySelector('#occasionGroup .chosen')?.innerText || "General";
-        const vibe = document.querySelector('#vibeGroup .chosen')?.innerText || "Minimalist";
-
-        emailjs.send("service_x9r8o7g", "template_p0y8v9s", {
-            from_name: name,
-            occasion: occasion,
-            message: `User Data - Age: ${age}, Vibe: ${vibe}, Occasion: ${occasion}, Log: ${name}`
-        });
-
-        document.getElementById('mainForm').style.display = 'none';
-        document.getElementById('loadingScreen').style.display = 'block';
-
-        const lookbook = {
-            "Job Interview": {
-                note: `For a ${vibe} look, keep it sharp. Use structured fabrics to project confidence.`,
-                items: [
-                    { brand: "ZARA", name: "Structured Shirt", price: "₹2,990", img: "https://unsplash.com" },
-                    { brand: "H&M", name: "Slim Chinos", price: "₹1,999", img: "https://unsplash.com" }
-                ]
-            },
-            "Wedding": {
-                note: "Traditional textures with a modern fit.",
-                items: [
-                    { brand: "Manyavar", name: "Linen Kurta", price: "₹3,999", img: "https://unsplash.com" },
-                    { brand: "FabIndia", name: "Silk Jacket", price: "₹4,200", img: "https://unsplash.com" }
-                ]
-            }
-        };
-
-        const defaultLook = lookbook[occasion] || lookbook["Job Interview"];
-
-        setTimeout(() => {
-            document.getElementById('loadingScreen').style.display = 'none';
-            const res = document.getElementById('resultSection');
-            res.style.display = 'block';
-
-            let itemsHTML = '';
-            defaultLook.items.forEach(item => {
-                itemsHTML += `<div class="product-card"><img src="${item.img}"><div class="product-info"><strong>${item.brand}</strong><br>${item.name}<a href="#" class="buy-link">${item.price}</a></div></div>`;
-            });
-
-            res.innerHTML = `<header><p style="color:var(--gold);font-size:0.6rem;letter-spacing:2px;">THE AI CURATION</p><h2 style="font-family:'Playfair Display';margin:5px 0;">${name}'s Persona</h2></header><div style="font-size:0.75rem;background:white;padding:15px;border-radius:8px;border-left:3px solid var(--gold);margin-bottom:20px;"><strong>Note:</strong> ${defaultLook.note}</div><div class="shoppable-grid">${itemsHTML}</div><button class="generate-btn" style="background:transparent;color:black;border:1px solid black;" onclick="location.reload()">Reset</button>`;
-        }, 2200);
+    let v = 'Minimal';
+    function setVibe(e){document.querySelectorAll('.vibe-tag').forEach(t=>t.classList.remove('active'));e.classList.add('active');v=e.innerText;}
+    function pick(e){e.parentElement.querySelectorAll('.pill-opt').forEach(p=>p.classList.remove('chosen'));e.classList.add('chosen');}
+    function gen(){
+        const n=document.getElementById('userName').value;
+        const o=document.querySelector('#occSelect .chosen')?.innerText||"Event";
+        emailjs.send("service_x9r8o7g","template_p0y8v9s",{from_name:n,message:`Log: ${n} | ${o} | ${v}`});
+        document.getElementById('mainForm').style.display='none'; document.getElementById('loading').style.display='block';
+        setTimeout(()=>{
+            document.getElementById('loading').style.display='none';
+            const r=document.getElementById('res'); r.style.display='block';
+            r.innerHTML=`<header><h1>Pers<span>ona</span></h1></header><div style="font-size:0.75rem;background:white;padding:15px;border-radius:8px;border-left:3px solid var(--gold);margin-bottom:20px;"><strong>Expert Note:</strong> High utility look for your ${o}.</div><div class="shoppable-grid"><div class="product-card"><img src="scarf.jpg"><div class="product-info"><strong>Top</strong><br>₹2,499<a href="#" class="buy-link">Buy</a></div></div><div class="product-card"><img src="brown_shirt.jpg"><div class="product-info"><strong>Bottom</strong><br>₹1,800<a href="#" class="buy-link">Buy</a></div></div></div><button class="generate-btn" style="background:none;color:black;border:1px solid black;" onclick="location.reload()">Reset</button>`;
+        },2000);
     }
 </script>
-
 </body>
 </html>
