@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Persona | Your Personal AI Stylist</title>
-    <!-- Keep EmailJS for your logs -->
     <script src="https://jsdelivr.net"></script>
     <script>emailjs.init("D_WqKgcxqgi0GFq1k");</script>
     <link href="https://googleapis.com" rel="stylesheet">
@@ -15,7 +14,7 @@
             --black: #1a1a1a;
             --input-bg: #ffffff;
             --border: #e0dcd5;
-            --form-bg: rgba(255,255,255,0.65);
+            --form-bg: rgba(255,255,255,0.55);
         }
         * { box-sizing: border-box; }
         body {
@@ -29,61 +28,58 @@
             min-height: 100vh;
             padding: 30px 20px;
         }
-        .main-wrapper { width: 100%; max-width: 480px; margin: 0 auto; }
+        .main-wrapper {
+            width: 100%;
+            max-width: 500px;
+        }
         .form-container {
             background: var(--form-bg); backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.6); border-radius: 16px; padding: 28px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.6); border-radius: 16px; padding: 28px 28px 36px;
         }
         header { text-align: center; margin-bottom: 24px; }
-        header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin: 0; font-weight: 700; }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin: 0 0 4px; font-weight: 700; line-height: 1; }
         header h1 span { color: var(--gold); font-style: italic; }
-        header p { letter-spacing: 4px; font-size: 0.65rem; color: #666; text-transform: uppercase; margin-top: 5px; }
+        header p { letter-spacing: 4px; font-size: 0.65rem; color: #888; text-transform: uppercase; margin: 0; }
 
-        .section-label { color: var(--gold); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin: 22px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+        .section-label { color: var(--gold); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 22px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+        label { display: block; font-size: 0.75rem; color: #777; margin-bottom: 6px; }
         input[type="text"] {
-            width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px;
-            font-size: 0.9rem; outline: none; transition: 0.2s;
+            width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 6px;
+            background: var(--input-bg); font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
+            outline: none; transition: border-color 0.2s;
         }
         input[type="text"]:focus { border-color: var(--gold); }
-        .pill-select { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .pill-select { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 6px; }
         .pill-opt {
             padding: 8px 16px; background: white; border: 1px solid var(--border);
-            border-radius: 50px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s;
+            border-radius: 50px; cursor: pointer; font-size: 0.76rem;
+            font-family: 'DM Sans', sans-serif; color: #666;
+            transition: all 0.18s; user-select: none; white-space: nowrap;
         }
         .pill-opt.chosen { background: var(--black); color: white; border-color: var(--black); }
+        .age-display { font-size: 2.4rem; font-weight: 700; color: var(--black); text-align: center; margin-top: 6px; line-height: 1; }
+        input[type="range"] { width: 100%; appearance: none; height: 2px; background: #ddd; margin: 14px 0; outline: none; cursor: pointer; }
+        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background: var(--black); border-radius: 50%; cursor: pointer; border: 3px solid var(--bg-color); box-shadow: 0 0 8px rgba(0,0,0,0.15); }
         
-        /* Result & Grid Styles */
-        .result-section { display: none; }
-        .shoppable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .product-card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); animation: fadeUp 0.4s ease forwards; }
-        .product-card img { width: 100%; height: 160px; object-fit: cover; }
-        .product-info { padding: 10px; font-size: 0.7rem; }
-        .product-brand { font-weight: 700; display: block; color: var(--black); }
-        .product-name { color: #777; font-size: 0.65rem; margin-bottom: 8px; display: block; }
-        .buy-link { 
-            display: block; text-align: center; background: var(--black); 
-            color: white; text-decoration: none; padding: 7px; 
-            border-radius: 4px; font-weight: 600; font-size: 0.7rem;
-        }
+        .generate-btn { width: 100%; background: var(--black); color: white; padding: 18px; border: none; border-radius: 8px; font-size: 0.8rem; font-weight: 600; font-family: 'DM Sans', sans-serif; text-transform: uppercase; letter-spacing: 2px; margin-top: 28px; cursor: pointer; transition: background 0.2s; }
         
-        .generate-btn { 
-            width: 100%; background: var(--black); color: white; padding: 18px; 
-            border: none; border-radius: 8px; font-weight: 600; text-transform: uppercase; 
-            letter-spacing: 2px; margin-top: 20px; cursor: pointer; transition: 0.2s;
-        }
-        .generate-btn:hover { background: #333; }
-
-        #loadingScreen { display: none; text-align: center; padding: 60px 20px; }
-        .spinner { width: 40px; height: 40px; border: 3px solid rgba(0,0,0,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        .loading-screen { display: none; text-align: center; padding: 48px 20px; }
+        .spinner { width: 38px; height: 38px; border: 2px solid rgba(0,0,0,0.1); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 16px; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .result-section { display: none; }
+        .shoppable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+        .product-card { background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); animation: fadeUp 0.4s ease; }
+        .product-card img { width: 100%; height: 150px; object-fit: cover; }
+        .product-info { padding: 10px; font-size: 0.7rem; }
+        .buy-link { display: block; text-align: center; background: var(--black); color: white; text-decoration: none; padding: 6px; border-radius: 4px; margin-top: 5px; font-weight: 600; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div class="main-wrapper">
-    <!-- INPUT FORM -->
     <div class="form-container" id="mainForm">
         <header>
             <h1>Pers<span>ona</span></h1>
@@ -91,26 +87,36 @@
         </header>
 
         <div class="section-label">Identity</div>
-        <input type="text" id="userName" placeholder="Your Name or Style Preference">
+        <input type="text" id="userName" placeholder="Your Name">
         
+        <div class="section-label">Age</div>
+        <div class="age-display" id="ageDisplay">22</div>
+        <input type="range" id="userAge" min="16" max="60" value="22" oninput="document.getElementById('ageDisplay').innerText = this.value">
+
         <div class="section-label">The Occasion</div>
         <div class="pill-select" id="occasionGroup">
             <div class="pill-opt" onclick="selectPill(this)">Date Night</div>
-            <div class="pill-opt" onclick="selectPill(this)">Job Interview</div>
+            <div class="pill-opt chosen" onclick="selectPill(this)">Job Interview</div>
             <div class="pill-opt" onclick="selectPill(this)">Wedding</div>
             <div class="pill-opt" onclick="selectPill(this)">Casual Hangout</div>
         </div>
 
-        <button class="generate-btn" id="submitBtn" onclick="generateStyle()">Style Me Instantly</button>
+        <div class="section-label">Your Vibe</div>
+        <div class="pill-select" id="vibeGroup">
+            <div class="pill-opt chosen" onclick="selectPill(this)">Minimalist</div>
+            <div class="pill-opt" onclick="selectPill(this)">Streetwear</div>
+            <div class="pill-opt" onclick="selectPill(this)">Classic</div>
+            <div class="pill-opt" onclick="selectPill(this)">Experimental</div>
+        </div>
+
+        <button class="generate-btn" onclick="generateStyle()">Style Me Instantly</button>
     </div>
 
-    <!-- LOADING SCREEN -->
-    <div id="loadingScreen">
+    <div class="loading-screen" id="loadingScreen">
         <div class="spinner"></div>
-        <p style="font-style: italic; font-family: 'Playfair Display'; font-size: 1.1rem;">Crafting your persona...</p>
+        <p style="font-style: italic; font-family: 'Playfair Display';">Designing your specific persona...</p>
     </div>
 
-    <!-- RESULT SECTION -->
     <div class="form-container result-section" id="resultSection"></div>
 </div>
 
@@ -121,87 +127,70 @@
     }
 
     function generateStyle() {
-        const nameInput = document.getElementById('userName').value;
-        const occasion = document.querySelector('#occasionGroup .chosen')?.innerText || "Special Occasion";
+        const name = document.getElementById('userName').value || "Guest";
+        const age = document.getElementById('userAge').value;
+        const occasion = document.querySelector('#occasionGroup .chosen')?.innerText || "General";
+        const vibe = document.querySelector('#vibeGroup .chosen')?.innerText || "Minimalist";
 
-        if(!nameInput) { alert("Please enter your name!"); return; }
-
-        // 1. Send to EmailJS (Your Logging System)
-        // This fires in the background so you can monitor logs/injection attempts
+        // LOGGING (For monitoring prompt injections and analytics)
         emailjs.send("service_x9r8o7g", "template_p0y8v9s", {
-            from_name: nameInput,
+            from_name: name,
             occasion: occasion,
-            message: `User: ${nameInput} is looking for a ${occasion} outfit.`
+            message: `User Data - Age: ${age}, Vibe: ${vibe}, Occasion: ${occasion}, Input: ${name}`
         });
 
-        // 2. Immediate UI Transition
+        // UI TRANSITION
         document.getElementById('mainForm').style.display = 'none';
         document.getElementById('loadingScreen').style.display = 'block';
 
-        // 3. Simulated AI Selection Logic
+        // LOGIC FOR OUTPUT
         const lookbook = {
-            "Date Night": {
-                note: "Aim for 'Modern Minimalist'. Dark tones with a single texture pop work best.",
-                items: [
-                    { brand: "SNITCH", name: "Solid Black Shirt", price: "₹1,499", img: "https://unsplash.com" },
-                    { brand: "ZARA", name: "Slim Fit Trousers", price: "₹2,990", img: "https://unsplash.com" }
-                ]
-            },
             "Job Interview": {
-                note: "Stick to the 'Power Neutral' palette. Navy and White signal reliability.",
+                note: `For a ${vibe} look, keep it sharp. Use structured fabrics and neutral tones to project confidence.`,
                 items: [
-                    { brand: "Louis Philippe", name: "Sky Blue Formal", price: "₹2,499", img: "https://unsplash.com" },
-                    { brand: "Peter England", name: "Navy Chinos", price: "₹1,899", img: "https://unsplash.com" }
+                    { brand: "Uniqlo", name: "Oxford Shirt", price: "₹1,990", img: "https://unsplash.com" },
+                    { brand: "Raymond", name: "Slim Fit Chinos", price: "₹2,499", img: "https://unsplash.com" }
                 ]
             },
             "Wedding": {
-                note: "Royal Ethnic is the way to go. Focus on fit and fabric quality.",
+                note: "Traditional with a modern twist. Focus on rich textures and deep colors.",
                 items: [
                     { brand: "Manyavar", name: "Linen Kurta", price: "₹3,999", img: "https://unsplash.com" },
-                    { brand: "FabIndia", name: "Silk Nehru Jacket", price: "₹4,500", img: "https://unsplash.com" }
-                ]
-            },
-            "Casual Hangout": {
-                note: "Relaxed fit is king here. Oversized tees with straight denim.",
-                items: [
-                    { brand: "H&M", name: "Relaxed Fit Tee", price: "₹799", img: "https://unsplash.com" },
-                    { brand: "Levis", name: "501 Original", price: "₹4,200", img: "https://unsplash.com" }
+                    { brand: "FabIndia", name: "Nehru Jacket", price: "₹4,200", img: "https://unsplash.com" }
                 ]
             }
         };
 
-        const result = lookbook[occasion] || lookbook["Casual Hangout"];
+        const defaultLook = lookbook[occasion] || lookbook["Job Interview"];
 
-        // 4. Show Result after "Processing"
         setTimeout(() => {
             document.getElementById('loadingScreen').style.display = 'none';
-            const resSection = document.getElementById('resultSection');
-            resSection.style.display = 'block';
+            const res = document.getElementById('resultSection');
+            res.style.display = 'block';
 
             let itemsHTML = '';
-            result.items.forEach(item => {
+            defaultLook.items.forEach(item => {
                 itemsHTML += `
                     <div class="product-card">
                         <img src="${item.img}">
                         <div class="product-info">
-                            <span class="product-brand">${item.brand}</span>
-                            <span class="product-name">${item.name}</span>
-                            <a href="#" class="buy-link">Get for ${item.price}</a>
+                            <strong>${item.brand}</strong><br>${item.name}
+                            <a href="#" class="buy-link">${item.price}</a>
                         </div>
                     </div>
                 `;
             });
 
-            resSection.innerHTML = `
+            res.innerHTML = `
                 <header>
-                    <p style="color: var(--gold); letter-spacing: 2px; font-size: 0.6rem;">THE PERSONA CURATION</p>
-                    <h2 style="font-family: 'Playfair Display'; margin: 5px 0;">Style Set for ${nameInput.split(' ')[0]}</h2>
+                    <p style="color: var(--gold); font-size: 0.6rem; letter-spacing: 2px;">THE AI CURATION</p>
+                    <h2 style="font-family: 'Playfair Display'; margin: 5px 0;">${name}'s Persona</h2>
                 </header>
-                <div style="font-size: 0.75rem; background: white; padding: 15px; border-radius: 8px; border-left: 3px solid var(--gold); margin: 15px 0 20px; line-height: 1.4;">
-                    <strong>Why this works:</strong> ${result.note}
+                <div style="font-size: 0.75rem; background: white; padding: 15px; border-radius: 8px; border-left: 3px solid var(--gold); margin-bottom: 20px; line-height: 1.4;">
+                    <strong>Note:</strong> ${defaultLook.note}
                 </div>
                 <div class="shoppable-grid">${itemsHTML}</div>
-                <button class="generate-btn" style="margin-top:25px; background: transparent; color: black; border: 1px solid black;" onclick="location.reload()">Reset Stylist</button>
+                <button class="generate-btn" style="background:transparent; color:black; border:1px solid black;" onclick="location.reload()">Start Over</button>
             `;
         }, 2200);
     }
