@@ -2,6 +2,22 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    if (url.pathname === '/style' && request.method === 'POST') {
+      // Temporary debug — remove after testing
+      const keyCheck = env.GROQ_API_KEY ? env.GROQ_API_KEY.substring(0, 8) : 'NOT FOUND';
+      console.log('Key check:', keyCheck);
+      
+      if (!env.GROQ_API_KEY) {
+        return new Response(JSON.stringify({ error: 'Key not found: ' + keyCheck }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+
     // Handle the /style API route
     if (url.pathname === '/style' && request.method === 'POST') {
       try {
