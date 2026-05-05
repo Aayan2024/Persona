@@ -25,11 +25,12 @@ export default {
             .join('\n');
         }
 
+        const GROQ_KEY = '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';
         const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${env.GROQ_API_KEY}`
+            'Authorization': `Bearer ${GROQ_KEY}`
           },
           body: JSON.stringify(body)
         });
