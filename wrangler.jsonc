@@ -11,5 +11,8 @@
   },
   "compatibility_flags": [
     "nodejs_compat"
-  ]
+  ],
+  "vars": {
+    "GROQ_API_KEY": ""
+  }
 }
