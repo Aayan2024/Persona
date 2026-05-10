@@ -1,5 +1,3 @@
-const GROQ_API_KEY = "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";
-
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -30,7 +28,7 @@ export default {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${GROQ_API_KEY}`
+            'Authorization': `Bearer ${env.GROQ_API_KEY}`
           },
           body: JSON.stringify(body)
         });
